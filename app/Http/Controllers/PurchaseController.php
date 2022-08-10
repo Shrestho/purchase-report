@@ -37,17 +37,21 @@ class PurchaseController extends Controller
     {
         //
         $input = $request->all();
+        // print_r($input);
+
+
         foreach ($input as $purchase) {
+            // print_r($purchase);
             $purchaseObj = new Purchase();
-            $input['created_at'] = $purchaseObj['created_at'];
-            $input['name'] = $purchaseObj['name'];
-            $input['order_no'] = $purchaseObj['order_no'];
-            $input['product_code'] = $purchaseObj['product_code'];
-            $input['product_name'] = $purchaseObj['product_name'];
-            $input['product_price'] = $purchaseObj['product_price'];
-            $input['purchase_quantity'] = $purchaseObj['purchase_quantity'];
-            $input['user_phone'] = $purchaseObj['user_phone'];
-            $purchaseObj->save($input);
+            // $input['created_at'] = $purchase['created_at'];
+            // $input['name'] = $purchase['name'];
+            // $input['order_no'] = $purchase['order_no'];
+            // $input['product_code'] = $purchase['product_code'];
+            // $input['product_name'] = $purchase['product_name'];
+            // $input['product_price'] = $purchase['product_price'];
+            // $input['purchase_quantity'] = $purchase['purchase_quantity'];
+            // $input['user_phone'] = $purchase['user_phone'];
+            $purchaseObj->save($purchase);
         }
 
         // $purchase = $purchaseObj->save($input);

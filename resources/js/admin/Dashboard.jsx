@@ -18,11 +18,12 @@ function Dashboard() {
             return response.json();
         }).then(responseData=>{
             console.log("res:",responseData)
-            const previousPurchase = purchases;
-            responseData.map((data,index)=>{
-                previousPurchase[index] = data
-                setPurchases(previousPurchase)
-        })
+            setPurchases(responseData)
+            // const previousPurchase = purchases;
+            // responseData.map((data,index)=>{
+            //     previousPurchase[index] = data
+            //     setPurchases(previousPurchase)
+        // })
         }).catch(error=>{ 
             return error.response;
         });
@@ -32,6 +33,7 @@ function Dashboard() {
 
     const savePurchase = async() =>{
         const data = purchases;
+        console.log("submit data:",data);
         const res = await axios.post('/api/purchase', data).then(response=>{
                 return response;
             }).catch(error=>{
