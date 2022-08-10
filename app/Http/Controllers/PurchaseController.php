@@ -37,12 +37,36 @@ class PurchaseController extends Controller
     {
         //
         $input = $request->all();
-        // print_r($input);
+        $purchases = $input['data'];
+        // print_r($purchases[0]);
+        // print_r(count($purchases));
+
+        for($i=0; $i<count($purchases); $i++){
+             print_r($purchases[$i]);
+                // print_r($purchase);
+                $purchaseObj = new Purchase();
+                $purchaseObj->save($purchases[$i]);
+
+        }
+
+        // foreach ($purchases as $key=>$purchase) {
+        //     // print_r($purchase);
+        //     $purchaseObj = new Purchase();
+        //     $data['created_at'] = $purchase['created_at'];
+        //     $data['name'] = $purchase['name'];
+        //     $data['order_no'] = $purchase['order_no'];
+        //     $data['product_code'] = $purchase['product_code'];
+        //     $data['product_name'] = $purchase['product_name'];
+        //     $data['product_price'] = $purchase['product_price'];
+        //     $data['purchase_quantity'] = $purchase['purchase_quantity'];
+        //     $data['user_phone'] = $purchase['user_phone'];
+        //     $purchaseObj->save($data);
+        // }
 
 
-        foreach ($input as $purchase) {
+        // foreach ($input as $purchase) {
             // print_r($purchase);
-            $purchaseObj = new Purchase();
+            // $purchaseObj = new Purchase();
             // $input['created_at'] = $purchase['created_at'];
             // $input['name'] = $purchase['name'];
             // $input['order_no'] = $purchase['order_no'];
@@ -51,8 +75,8 @@ class PurchaseController extends Controller
             // $input['product_price'] = $purchase['product_price'];
             // $input['purchase_quantity'] = $purchase['purchase_quantity'];
             // $input['user_phone'] = $purchase['user_phone'];
-            $purchaseObj->save($purchase);
-        }
+        //     $purchaseObj->save($purchase);
+        // }
 
         // $purchase = $purchaseObj->save($input);
         // return $this->$purchase;
