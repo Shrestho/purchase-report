@@ -14,3 +14,4 @@ import './bootstrap';
 
 // import './admin/Login';
 import './admin/Dashboard';
+import './components/Report';

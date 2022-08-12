@@ -2,21 +2,11 @@ import { Button } from 'react-bootstrap';
 import React, { useEffect, useReducer, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import Report from '../components/Report';
 
 function Dashboard() {
-    // const [purchases, setPurchases] = useState({data: ''});
-    // console.log("purchase:",purchases)
-    const [state, setState] = useReducer((state, newState) => ({ ...state, ...newState }), {
-        created_at: [],
-        name: [],
-        order_no: [],
-        product_code: [],
-        product_name: [],
-        product_price: [],
-        purchase_quantity: [],
-        user_phone: []
-    })
-    console.log("state:",state);
+    const [purchases, setPurchases] = useState({data: ''});
+    const [showReport, setShowReport] = useState(false);
     
     useEffect(() => {
         getPurchase();
@@ -27,37 +17,20 @@ function Dashboard() {
         fetch(url).then(response=>{
             return response.json();
         }).then(responseData=>{
-            // const previousPurchase = purchases;
-            // setPurchases({data: responseData})
-            responseData.map((data,index)=>{
-                setState({
-                    ...state,
-                    created_at: data.created_at,
-                    name: data.name,
-                    order_no: data.order_no,
-                    product_code: data.product_code,
-                    product_name: data.product_name,
-                    product_price: data.product_price,
-                    purchase_quantity: data.purchase_quantity,
-                    user_phone: data.user_phone
-                })
-                // console.log("data",data)
-                // previousPurchase[index] = data
-                // setPurchases(previousPurchase)
-        })
+            setPurchases({data: responseData})
         }).catch(error=>{ 
             return error.response;
         });
-        // return res;
     }
 
     const savePurchase = async() =>{
         const data = purchases;
         const res = await axios.post('/api/purchase', data).then(response=>{
-                return response;
-            }).catch(error=>{
-                return error.response;
-            });
+            setShowReport(true);
+            return response;
+        }).catch(error=>{
+            return error.response;
+        });
     }
 
     return (
@@ -67,9 +40,14 @@ function Dashboard() {
                     <div className="card">
                         <div className="card-header">Purchase report</div>
 
+                        {showReport ? 
+                        <div>
+                        <Report />
+                        </div> :
                         <div className="card-body d-flex justify-content-center">
                             <Button variant="primary" onClick={savePurchase}>Generate Report</Button>
                         </div>
+                        }
                     </div>
                 </div>
             </div>

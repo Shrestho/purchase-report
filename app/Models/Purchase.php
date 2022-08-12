@@ -9,8 +9,7 @@ class Purchase extends Model
 {
     use HasFactory;
 
-    // public $timestamps = false;
-
-    protected $table = 'purchases';
-    protected $fillable = ['name','order_no','product_code','product_name','product_price','purchase_quantity','user_phone'];
+    public $timestamps = false;
+    
+    // protected $fillable = ['name','order_no','product_code','product_name','product_price','purchase_quantity','user_phone'];
 }

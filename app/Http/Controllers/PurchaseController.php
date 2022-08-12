@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class PurchaseController extends Controller
 {
@@ -15,6 +17,13 @@ class PurchaseController extends Controller
     public function index()
     {
         //
+        $purchases = DB::table('purchases')
+        ->selectRaw('product_name, name, product_price, sum(purchase_quantity) as quantity, sum(product_price*purchase_quantity) as total_price')
+        ->groupBy('product_name','name')
+        ->orderBy('total_price', 'desc')
+        ->get();
+        // $purchases = (new Purchase())->groupBy('product_name')->get();
+        return $purchases;
     }
 
     /**
@@ -42,44 +51,19 @@ class PurchaseController extends Controller
         // print_r(count($purchases));
 
         for($i=0; $i<count($purchases); $i++){
-             print_r($purchases[$i]);
-                // print_r($purchase);
-                $purchaseObj = new Purchase();
-                $purchaseObj->save($purchases[$i]);
-
+             $purchase_data = $purchases[$i];
+            $purchaseObj = new Purchase();
+            $purchaseObj['created_at'] = $purchase_data['created_at'];
+            $purchaseObj['name'] = $purchase_data['name'];
+            $purchaseObj['order_no'] = $purchase_data['order_no'];
+            $purchaseObj['product_code'] = $purchase_data['product_code'];
+            $purchaseObj['product_name'] = $purchase_data['product_name'];
+            $purchaseObj['product_price'] = (double)$purchase_data['product_price'];
+            $purchaseObj['purchase_quantity'] = $purchase_data['purchase_quantity'];
+            $purchaseObj['user_phone'] = $purchase_data['user_phone'];
+            $purchase = $purchaseObj->save();
         }
-
-        // foreach ($purchases as $key=>$purchase) {
-        //     // print_r($purchase);
-        //     $purchaseObj = new Purchase();
-        //     $data['created_at'] = $purchase['created_at'];
-        //     $data['name'] = $purchase['name'];
-        //     $data['order_no'] = $purchase['order_no'];
-        //     $data['product_code'] = $purchase['product_code'];
-        //     $data['product_name'] = $purchase['product_name'];
-        //     $data['product_price'] = $purchase['product_price'];
-        //     $data['purchase_quantity'] = $purchase['purchase_quantity'];
-        //     $data['user_phone'] = $purchase['user_phone'];
-        //     $purchaseObj->save($data);
-        // }
-
-
-        // foreach ($input as $purchase) {
-            // print_r($purchase);
-            // $purchaseObj = new Purchase();
-            // $input['created_at'] = $purchase['created_at'];
-            // $input['name'] = $purchase['name'];
-            // $input['order_no'] = $purchase['order_no'];
-            // $input['product_code'] = $purchase['product_code'];
-            // $input['product_name'] = $purchase['product_name'];
-            // $input['product_price'] = $purchase['product_price'];
-            // $input['purchase_quantity'] = $purchase['purchase_quantity'];
-            // $input['user_phone'] = $purchase['user_phone'];
-        //     $purchaseObj->save($purchase);
-        // }
-
-        // $purchase = $purchaseObj->save($input);
-        // return $this->$purchase;
+        return response($purchase);
     }
 
     /**
